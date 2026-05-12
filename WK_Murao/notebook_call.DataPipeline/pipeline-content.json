@@ -1,0 +1,84 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "fc4a7f3e-b5ef-498e-b336-a8854dde8dbb",
+          "workspaceId": "4cd2a2c6-47cc-42b8-b09a-9e39a1262112"
+        },
+        "externalReferences": {
+          "connection": "314fde30-a7e0-4d13-ab14-d5a53a78d62a"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Notebook1",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": []
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {},
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "82d7fb3c-605e-81e5-4d22-f98e0c159468",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "be18bdeb-f5f3-47cf-be60-6faf04e8ee1c"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Invoke pipeline1",
+        "dependsOn": [
+          {
+            "activity": "Notebook1",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "fc4a7f3e-b5ef-498e-b336-a8854dde8dbb",
+          "workspaceId": "4cd2a2c6-47cc-42b8-b09a-9e39a1262112"
+        },
+        "externalReferences": {
+          "connection": "314fde30-a7e0-4d13-ab14-d5a53a78d62a"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Notebook1_copy1",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": [
+          {
+            "activity": "Invoke pipeline1",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
