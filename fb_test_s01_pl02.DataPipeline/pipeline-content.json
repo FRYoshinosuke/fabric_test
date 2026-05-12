@@ -1,0 +1,124 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Fail",
+        "typeProperties": {
+          "message": "エラーメッセージ",
+          "errorCode": "エラーコード"
+        },
+        "name": "Fail1",
+        "dependsOn": []
+      },
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {},
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "59473372-6bb8-b9fe-4cf0-2ae498dd08b9",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "be18bdeb-f5f3-47cf-be60-6faf04e8ee1c"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Invoke pipeline1",
+        "dependsOn": [
+          {
+            "activity": "Fail1",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Office365Email",
+        "typeProperties": {
+          "body": "<p>時間：@{utcNow()}</p>\n<p>パイプライン：@{pipeline().Pipeline}</p>",
+          "to": {
+            "value": "koji.murao@futurerays.biz",
+            "type": "Expression"
+          },
+          "subject": "アラートテスト",
+          "cc": "yoshinosuke.fukuda@futurerays.biz"
+        },
+        "externalReferences": {
+          "connection": "13fffe18-f9c9-4d79-9c61-3f1372fcd313"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Office365Email1",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": []
+      },
+      {
+        "type": "Fail",
+        "typeProperties": {
+          "message": "エラーメッセージ",
+          "errorCode": "エラーコード"
+        },
+        "name": "Fail1_copy1",
+        "dependsOn": [
+          {
+            "activity": "Fail1",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression": {
+            "value": "hasError == true",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "type": "Fail",
+              "typeProperties": {
+                "message": "message",
+                "errorCode": "code"
+              },
+              "name": "Fail2",
+              "dependsOn": []
+            },
+            {
+              "type": "Wait",
+              "typeProperties": {
+                "waitTimeInSeconds": 1
+              },
+              "name": "Wait1",
+              "dependsOn": [
+                {
+                  "activity": "Fail2",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            }
+          ],
+          "ifFalseActivities": []
+        },
+        "name": "If Condition1",
+        "dependsOn": []
+      }
+    ]
+  }
+}

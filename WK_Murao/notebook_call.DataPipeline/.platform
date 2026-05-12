@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "notebook_call"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "e49da68a-aeab-98f4-4688-51cfe0b59fb5"
+  }
+}
